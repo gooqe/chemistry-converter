@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chemistry Converter</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px; /* 박스 크기를 일정하게 맞추기 위해 설정 */
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input, select, button {
+            width: 100%; /* 입력 필드, 선택 메뉴 및 버튼의 너비를 동일하게 설정 */
+            padding: 10px;
+            margin-top: 5px;
+            margin-bottom: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box; /* 박스 크기 계산을 포함하여 전체 크기 조절 */
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .result {
+            margin-top: 20px;
+            font-size: 1.2em;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Chemistry Converter</h2>
+        <div class="form-group">
+            <label for="value">Value:</label>
+            <input type="number" id="value" placeholder="Enter value" required>
+        </div>
+        <div class="form-group">
+            <label for="molecularWeight">Molecular Weight (g/mol):</label>
+            <input type="number" id="molecularWeight" placeholder="Enter molecular weight" required>
+        </div>
+        <div class="form-group">
+            <label for="solventMass">Solvent Mass (kg):</label>
+            <input type="number" id="solventMass" placeholder="Enter solvent mass" required>
+        </div>
+        <div class="form-group">
+            <label for="conversionType">Conversion Type:</label>
+            <select id="conversionType">
+                <option value="percentToMolarity">Percent to Molarity</option>
+                <option value="percentToMolality">Percent to Molality</option>
+                <option value="molarityToMolality">Molarity to Molality</option>
+            </select>
+        </div>
+        <button onclick="convert()">Convert</button>
+        <div class="result" id="result"></div>
+    </div>
+
+    <script>
+        function convert() {
+            const value = parseFloat(document.getElementById('value').value);
+            const molecularWeight = parseFloat(document.getElementById('molecularWeight').value);
+            const solventMass = parseFloat(document.getElementById('solventMass').value);
+            const conversionType = document.getElementById('conversionType').value;
+            let result;
+
+            switch (conversionType) {
+                case 'percentToMolarity':
+                    result = (value / 100) * 1000 / molecularWeight;
+                    break;
+                case 'percentToMolality':
+                    result = (value / 100) * 1000 / (molecularWeight * solventMass);
+                    break;
+                case 'molarityToMolality':
+                    result = (value / solventMass);
+                    break;
+                default:
+                    result = 'Invalid conversion type';
+            }
+
+            document.getElementById('result').innerText = `Result: ${result.toFixed(2)}`;
+        }
+    </script>
+</body>
+</html>
+

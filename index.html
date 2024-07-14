@@ -65,8 +65,12 @@
             <input type="number" id="molecularWeight" placeholder="Enter molecular weight" required>
         </div>
         <div class="form-group">
-            <label for="solventMass">Solvent Mass (kg):</label>
-            <input type="number" id="solventMass" placeholder="Enter solvent mass" required>
+            <label for="solutionM">Solution Mass (g):</label>
+            <input type="number" id="solutionM" placeholder="Enter solution mass" required>
+        </div>
+        <div class="form-group">
+            <label for="density">Density (g/mL):</label>
+            <input type="number" id="density" placeholder="Enter density" required>
         </div>
         <div class="form-group">
             <label for="conversionType">Conversion Type:</label>
@@ -84,27 +88,28 @@
         function convert() {
             const value = parseFloat(document.getElementById('value').value);
             const molecularWeight = parseFloat(document.getElementById('molecularWeight').value);
-            const solventMass = parseFloat(document.getElementById('solventMass').value);
+            const solutionM = parseFloat(document.getElementById('solutionM').value);
+            const density = parseFloat(document.getElementById('density').value);
             const conversionType = document.getElementById('conversionType').value;
             let result;
 
             switch (conversionType) {
                 case 'percentToMolarity':
-                    result = (value / 100) * 1000 / molecularWeight;
+                    result = (density * 1000 * value) / (100 * molecularWeight);
                     break;
                 case 'percentToMolality':
-                    result = (value / 100) * 1000 / (molecularWeight * solventMass);
+                    let korin = value * solutionM;
+                    result = (korin / molecularWeight) / (solutionM - korin) / 1000;
                     break;
                 case 'molarityToMolality':
-                    result = (value / solventMass);
+                    result = value / (density - (value * molecularWeight / 1000));
                     break;
                 default:
                     result = 'Invalid conversion type';
             }
 
-            document.getElementById('result').innerText = `Result: ${result.toFixed(2)}`;
+            document.getElementById('result').innerText = `결과: ${result.toFixed(2)}`;
         }
     </script>
 </body>
 </html>
-
